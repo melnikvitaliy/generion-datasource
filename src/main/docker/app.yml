@@ -1,0 +1,33 @@
+version: '2'
+services:
+    ddistore-app:
+        image: ddistore
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            # For keycloak to work, you need to add '127.0.0.1 keycloak' to your hosts file
+            - SECURITY_OAUTH2_CLIENT_ACCESS_TOKEN_URI=http://keycloak:9080/auth/realms/jhipster/protocol/openid-connect/token
+            - SECURITY_OAUTH2_CLIENT_USER_AUTHORIZATION_URI=http://keycloak:9080/auth/realms/jhipster/protocol/openid-connect/auth
+            - SECURITY_OAUTH2_RESOURCE_USER_INFO_URI=http://keycloak:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
+            - SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI=http://keycloak:9080/auth/realms/jhipster/protocol/openid-connect/token/introspect
+            - SPRING_DATA_CASSANDRA_CONTACTPOINTS=ddistore-cassandra
+            - JHIPSTER_SLEEP=30 # gives time for the Cassandra cluster to start and execute the migration scripts
+        ports:
+            - 8080:8080
+    ddistore-cassandra:
+        extends:
+            file: cassandra-cluster.yml
+            service: ddistore-cassandra
+    ddistore-cassandra-node:
+        image: cassandra:3.9
+        environment:
+            - CASSANDRA_SEEDS=ddistore-cassandra
+    ddistore-cassandra-migration:
+        extends:
+            file: cassandra-migration.yml
+            service: ddistore-cassandra-migration
+        environment:
+            - CREATE_KEYSPACE_SCRIPT=create-keyspace-prod.cql
+    keycloak:
+        extends:
+            file: keycloak.yml
+            service: keycloak
