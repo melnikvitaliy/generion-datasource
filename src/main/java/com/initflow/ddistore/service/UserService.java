@@ -2,6 +2,7 @@ package com.initflow.ddistore.service;
 
 import com.initflow.ddistore.config.CacheConfiguration;
 
+import com.initflow.ddistore.domain.Authority;
 import com.initflow.ddistore.domain.User;
 import com.initflow.ddistore.config.Constants;
 import com.initflow.ddistore.repository.UserRepository;
@@ -130,7 +131,9 @@ public class UserService {
         Map<String, Object> details = (Map<String, Object>) authentication.getUserAuthentication().getDetails();
         User user = getUser(details);
         Set<Authority> userAuthorities = extractAuthorities(authentication, details);
-        user.setAuthorities(userAuthorities);
+//        user.setAuthorities(userAuthorities);
+        Set<String> auth = userAuthorities.stream().map(it -> it.getName()).collect(Collectors.toSet());
+        user.setAuthorities(auth);
 
         // convert Authorities to GrantedAuthorities
         Set<GrantedAuthority> grantedAuthorities = userAuthorities.stream()
@@ -151,18 +154,18 @@ public class UserService {
         if (existingUser.isPresent()) {
             // if IdP sends last updated information, use it to determine if an update should happen
             if (details.get("updated_at") != null) {
-                Instant dbModifiedDate = existingUser.get().getLastModifiedDate();
-                Instant idpModifiedDate = new Date(Long.valueOf((Integer) details.get("updated_at"))).toInstant();
-                if (idpModifiedDate.isAfter(dbModifiedDate)) {
-                    log.debug("Updating user '{}' in local database...", user.getLogin());
-                    updateUser(user.getFirstName(), user.getLastName(), user.getEmail(),
-                        user.getLangKey(), user.getImageUrl());
-                }
+//                Instant dbModifiedDate = existingUser.get().getLastModifiedDate();
+//                Instant idpModifiedDate = new Date(Long.valueOf((Integer) details.get("updated_at"))).toInstant();
+//                if (idpModifiedDate.isAfter(dbModifiedDate)) {
+//                    log.debug("Updating user '{}' in local database...", user.getLogin());
+//                    updateUser(user.getFirstName(), user.getLastName(), user.getEmail(),
+//                        user.getLangKey());
+//                }
                 // no last updated info, blindly update
             } else {
                 log.debug("Updating user '{}' in local database...", user.getLogin());
                 updateUser(user.getFirstName(), user.getLastName(), user.getEmail(),
-                    user.getLangKey(), user.getImageUrl());
+                    user.getLangKey());
             }
         } else {
             log.debug("Saving user '{}' in local database...", user.getLogin());
@@ -224,9 +227,9 @@ public class UserService {
             String langKey = locale.substring(0, locale.indexOf("-"));
             user.setLangKey(langKey);
         }
-        if (details.get("picture") != null) {
-            user.setImageUrl((String) details.get("picture"));
-        }
+//        if (details.get("picture") != null) {
+//            user.setImageUrl((String) details.get("picture"));
+//        }
         return user;
     }
 

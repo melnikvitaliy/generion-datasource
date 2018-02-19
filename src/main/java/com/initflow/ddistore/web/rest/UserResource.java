@@ -2,6 +2,7 @@ package com.initflow.ddistore.web.rest;
 
 import com.initflow.ddistore.config.Constants;
 import com.codahale.metrics.annotation.Timed;
+import com.initflow.ddistore.repository.DocumentRepository;
 import com.initflow.ddistore.repository.UserRepository;
 import com.initflow.ddistore.security.AuthoritiesConstants;
 import com.initflow.ddistore.service.UserService;
@@ -10,6 +11,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;

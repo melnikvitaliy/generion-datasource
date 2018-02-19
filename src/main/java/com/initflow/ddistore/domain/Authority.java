@@ -1,5 +1,9 @@
 package com.initflow.ddistore.domain;
 
+import com.datastax.driver.mapping.annotations.PartitionKey;
+import com.datastax.driver.mapping.annotations.Table;
+import org.springframework.data.annotation.Id;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -7,14 +11,15 @@ import java.io.Serializable;
 /**
  * An authority (a security role) used by Spring Security.
  */
-
+@Table(name = "authority")
 public class Authority implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @NotNull
     @Size(max = 50)
-    @Id
+//    @Id
+    @PartitionKey
     private String name;
 
     public String getName() {

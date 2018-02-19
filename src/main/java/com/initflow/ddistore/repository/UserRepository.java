@@ -176,12 +176,12 @@ public class UserRepository {
         }
         User oldUser = mapper.get(user.getId());
         if (oldUser != null) {
-            if (!StringUtils.isEmpty(oldUser.getActivationKey()) && !oldUser.getActivationKey().equals(user.getActivationKey())) {
-                session.execute(deleteByActivationKeyStmt.bind().setString("activation_key", oldUser.getActivationKey()));
-            }
-            if (!StringUtils.isEmpty(oldUser.getResetKey()) && !oldUser.getResetKey().equals(user.getResetKey())) {
-                session.execute(deleteByResetKeyStmt.bind().setString("reset_key", oldUser.getResetKey()));
-            }
+//            if (!StringUtils.isEmpty(oldUser.getActivationKey()) && !oldUser.getActivationKey().equals(user.getActivationKey())) {
+//                session.execute(deleteByActivationKeyStmt.bind().setString("activation_key", oldUser.getActivationKey()));
+//            }
+//            if (!StringUtils.isEmpty(oldUser.getResetKey()) && !oldUser.getResetKey().equals(user.getResetKey())) {
+//                session.execute(deleteByResetKeyStmt.bind().setString("reset_key", oldUser.getResetKey()));
+//            }
             if (!StringUtils.isEmpty(oldUser.getLogin()) && !oldUser.getLogin().equals(user.getLogin())) {
                 session.execute(deleteByLoginStmt.bind().setString("login", oldUser.getLogin()));
             }
@@ -191,16 +191,16 @@ public class UserRepository {
         }
         BatchStatement batch = new BatchStatement();
         batch.add(mapper.saveQuery(user));
-        if (!StringUtils.isEmpty(user.getActivationKey())) {
-            batch.add(insertByActivationKeyStmt.bind()
-                .setString("activation_key", user.getActivationKey())
-                .setString("id", user.getId()));
-        }
-        if (!StringUtils.isEmpty(user.getResetKey())) {
-            batch.add(insertByResetKeyStmt.bind()
-                .setString("reset_key", user.getResetKey())
-                .setString("id", user.getId()));
-        }
+//        if (!StringUtils.isEmpty(user.getActivationKey())) {
+//            batch.add(insertByActivationKeyStmt.bind()
+//                .setString("activation_key", user.getActivationKey())
+//                .setString("id", user.getId()));
+//        }
+//        if (!StringUtils.isEmpty(user.getResetKey())) {
+//            batch.add(insertByResetKeyStmt.bind()
+//                .setString("reset_key", user.getResetKey())
+//                .setString("id", user.getId()));
+//        }
         batch.add(insertByLoginStmt.bind()
             .setString("login", user.getLogin())
             .setString("id", user.getId()));
@@ -214,12 +214,12 @@ public class UserRepository {
     public void delete(User user) {
         BatchStatement batch = new BatchStatement();
         batch.add(mapper.deleteQuery(user));
-        if (!StringUtils.isEmpty(user.getActivationKey())) {
-            batch.add(deleteByActivationKeyStmt.bind().setString("activation_key", user.getActivationKey()));
-        }
-        if (!StringUtils.isEmpty(user.getResetKey())) {
-            batch.add(deleteByResetKeyStmt.bind().setString("reset_key", user.getResetKey()));
-        }
+//        if (!StringUtils.isEmpty(user.getActivationKey())) {
+//            batch.add(deleteByActivationKeyStmt.bind().setString("activation_key", user.getActivationKey()));
+//        }
+//        if (!StringUtils.isEmpty(user.getResetKey())) {
+//            batch.add(deleteByResetKeyStmt.bind().setString("reset_key", user.getResetKey()));
+//        }
         batch.add(deleteByLoginStmt.bind().setString("login", user.getLogin()));
         batch.add(deleteByEmailStmt.bind().setString("email", user.getEmail().toLowerCase()));
         session.execute(batch);

@@ -158,12 +158,12 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = jHipsterProperties.getCors();
-        if (config.getAllowedOrigins() != null && !config.getAllowedOrigins().isEmpty()) {
-            log.debug("Registering CORS filter");
-            source.registerCorsConfiguration("/api/**", config);
-            source.registerCorsConfiguration("/management/**", config);
-            source.registerCorsConfiguration("/v2/api-docs", config);
-        }
+//        if (config.getAllowedOrigins() != null && !config.getAllowedOrigins().isEmpty()) {
+//            log.debug("Registering CORS filter");
+//            source.registerCorsConfiguration("/api/**", config);
+//            source.registerCorsConfiguration("/management/**", config);
+//            source.registerCorsConfiguration("/v2/api-docs", config);
+//        }
         return new CorsFilter(source);
     }
 

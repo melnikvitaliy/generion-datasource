@@ -30,7 +30,7 @@ spring:
             contactPoints: localhost
             protocolVersion: V4
             compression: LZ4
-            keyspaceName: DDIStore
+            keyspaceName: ddistore
     mail:
         host: localhost
         port: 25

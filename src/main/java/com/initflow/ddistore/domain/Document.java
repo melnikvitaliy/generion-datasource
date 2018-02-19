@@ -1,12 +1,11 @@
 package com.initflow.ddistore.domain;
 
-import org.springframework.data.cassandra.mapping.PrimaryKey;
-import org.springframework.data.cassandra.mapping.Table;
+import com.datastax.driver.mapping.annotations.*;
 
-@Table
+@Table(name = "document")
 public class Document {
 
-    @PrimaryKey
+    @PartitionKey
     private String address;
     private String content;
 
