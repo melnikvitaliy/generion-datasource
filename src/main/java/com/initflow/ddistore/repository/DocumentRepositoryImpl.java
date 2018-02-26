@@ -21,6 +21,7 @@ public class DocumentRepositoryImpl {
 
     private PreparedStatement delete;
     private PreparedStatement findAll;
+    private PreparedStatement findAllIn;
 
     public DocumentRepositoryImpl(Session session) {
         this.session = session;
@@ -36,6 +37,8 @@ public class DocumentRepositoryImpl {
                 "WHERE address = :address");
 
         findAll = session.prepare("SELECT * FROM document");
+
+        findAllIn = session.prepare("SELECT * FROM document where address in ?");
     }
 
     public Document findOne(String address) {
@@ -58,4 +61,7 @@ public class DocumentRepositoryImpl {
         return mapper.map(session.execute(findAll.bind())).all();
     }
 
+    public List<Document> findAll(List<String> addresses) {
+        return mapper.map(session.execute(findAllIn.bind(addresses))).all();
+    }
 }

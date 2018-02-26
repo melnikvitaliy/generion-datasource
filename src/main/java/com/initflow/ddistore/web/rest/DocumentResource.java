@@ -48,4 +48,11 @@ public class DocumentResource {
         documentRepository.delete(address);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PostMapping("/documents")
+    @Timed
+    public ResponseEntity<List<Document>> getAll(@RequestBody List<String> addresses) {
+        List<Document> documents = documentRepository.findAll(addresses);
+        return new ResponseEntity<>(documents, HttpStatus.OK);
+    }
 }
